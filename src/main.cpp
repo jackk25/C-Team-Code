@@ -27,8 +27,8 @@ void autonCode() {}
 
 void driveCode() {
   while(true) {
-    Motor10.spin(forward, Controller1.Axis3.position(), pct);
-    Motor11.spin(forward, Controller1.Axis2.position(), pct);
+    Motor10.spin(forward, -Controller1.Axis2.position(), pct);
+    Motor11.spin(forward, Controller1.Axis3.position(), pct);
   }
 }
 
