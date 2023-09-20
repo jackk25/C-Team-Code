@@ -19,8 +19,22 @@
 
 using namespace vex;
 
+competition mainCompetition;
+
+drivetrain mainDrive(Motor10, Motor11);
+
+void autonCode() {}
+
+void driveCode() {
+  while(true) {
+    Motor10.spin(forward, Controller1.Axis3.position(), pct);
+    Motor11.spin(forward, Controller1.Axis2.position(), pct);
+  }
+}
+
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
-  
+  mainCompetition.autonomous(autonCode);
+  mainCompetition.drivercontrol(driveCode);
 }
