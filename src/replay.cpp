@@ -46,7 +46,6 @@ int stoi(const char *s)
     return i;
 }
 
-
 /**
  * @brief Starts the recorded replay
  */
