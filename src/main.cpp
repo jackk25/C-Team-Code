@@ -15,7 +15,7 @@ competition mainCompetition;
 
 motor_group leftDrive(leftFront, leftBack);
 motor_group rightDrive(rightFront, rightBack);
-drivetrain mainDrive(leftDrive, rightDrive);
+drivetrain mainDrive(leftDrive, rightDrive, 320, 365, 260, mm, 1);
 
 void autonCode() {}
 
