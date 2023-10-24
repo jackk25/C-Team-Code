@@ -11,6 +11,7 @@ brain  Brain;
 controller Controller1 = controller(primary);
 motor Motor10 = motor(PORT10, ratio18_1, false);
 motor Motor11 = motor(PORT11, ratio18_1, false);
+gps MyGPS = gps(PORT12, 0.00, 0.00, mm, 180);
 
 // VEXcode generated functions
 // define variable for remote controller enable/disable
