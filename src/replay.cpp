@@ -1,31 +1,42 @@
 #include "vex.h"
+#include <list>
+#include <fstream>
+#include <string>
+#include <vector>
+#include <sstream>
 
-#include "replay.h"
-#include <iostream>
+using namespace vex;
 
-void writeReplay(std::vector<std::vector<int>> velocityData, std::string fileName);
-void readReplay(std::string fileName);
-void controlMotors(std::vector<std::vector<int>> csvData);
+std::list<std::list<int>> controllerInputs;
+std::string filename = "C-Team-Replay.csv";
 
 /**
- * @brief Saves the data from the controller to a CSV file on the SD card
- *
- * @param velocityData The data from the controller
- * @param fileName The name of the file to save the data to (MUST INCLUDE .csv)
+ * 
+ * @brief Saves the content of a nested list to an SD Card in CSV format
+ * 
+ * This function will take a nested list of ints and iterate through them,
+ * saving them to an SD Card inside of a VEX V5 Brain in a CSV format for replaying later
+ * 
+ * @return int - Exit Code
  */
-void writeReplay(std::vector<std::vector<int>> velocityData,
-               std::string fileName) {
+void nestedListToSD()
+{
+  Controller1.rumble(".--.");
+  std::list<std::list<int>>::iterator fullIt;
+  std::list<int>::iterator rowIt;
+  std::ofstream ofs(filename);
 
-  std::ofstream ofs("/usd/" + fileName, std::ofstream::out);
+  if(!Brain.SDcard.isInserted())
+  {
+    Brain.Screen.print("Error Saving: NO SD CARD");
+  }
 
-  // Save the data to the SD card
-  for (std::vector<int> row : velocityData) {
+  for(fullIt = controllerInputs.begin(); fullIt != controllerInputs.end(); fullIt++){
     int dataNum = 0;
-    for (int col : row) {
+    for(rowIt = fullIt->begin(); rowIt != fullIt->end(); rowIt++){
       dataNum++;
-      ofs << col;
-      if (dataNum !=
-          row.size()) { // Adds comma if we are not at the end of the row
+      ofs << *rowIt;
+      if(dataNum != fullIt->size()){    //Adds comma if we are not at the end of the row
         ofs << ',';
       }
     }
@@ -34,63 +45,68 @@ void writeReplay(std::vector<std::vector<int>> velocityData,
   ofs.close();
 }
 
-int stoi(const char *s)
+/**
+ * @brief Reads data from a list to Vex motors
+ * 
+ * @param unorderedCSVData List containing unformatted motor data
+ * @param dataSelectionSize How many elements are in a single entry in the replay
+ */
+void unorderedDataToMotor(std::list<int> unorderedCSVData, int dataSelectionSize)
 {
-    long i;
-    i = 0;
-    while(*s >= '0' && *s <= '9')
+  std::list<int>::iterator it;
+  std::vector<int> tempStructStorage;
+
+  //Classic iterating through a list
+  for (it = unorderedCSVData.begin(); it != unorderedCSVData.end(); it++)
+  {
+    //If the counter does not equal our maximum selection size, do this
+    if (tempStructStorage.size() != dataSelectionSize)
     {
-        i = i * 10 + (*s - '0');
-        s++;
+      //Push the contents of the iterator to our temporary storage
+      //Our iterator will have one of 4 values, all of them int
+      tempStructStorage.push_back(*it);
     }
-    return i;
+    if (tempStructStorage.size() == dataSelectionSize)
+    {
+      
+      //Clear our vector to make space for the next 4 values
+      tempStructStorage.clear();
+      wait(0.04, seconds);
+    }
+  }
 }
 
 /**
- * @brief Starts the recorded replay
+ * @brief Reads data from an SD card in the Vex Brain into a list, then 
+ * calls unorderedDataToMotor() with the list
  */
-void readReplay(std::string fileName) {
-  std::string rowString, colString;
-  std::vector<std::vector<int>> csvData;
+void readSDDataToList()
+{
+  int tempColumnInt;
+  std::string tempLineStorageString, tempColumnString;
+  std::list<int> rawCSVList;
 
-  std::ifstream inputCSV("/usd/" + fileName, std::ifstream::in);
+  Brain.Screen.newLine();
+  Brain.Screen.print("Replaying!");
+  Controller1.rumble("_.._");
 
-  // Split by newline
-  while (getline(inputCSV, rowString)) {
-    // Put our split data in a stream
-    std::stringstream lineStream(rowString);
-    std::vector<int> rowData;
-    // Split by comma
-    while (getline(lineStream, colString, ',')) {
-      char inputChar = colString.at(0);
-      int colInt = stoi(&inputChar);
-      rowData.push_back(colInt);
+  std::ifstream inputCSV(filename, std::ifstream::in);
+
+  //Split by newline
+  while (getline(inputCSV, tempLineStorageString))
+  {
+    //Put our split data in a stream
+    std::stringstream tempLineStorageStream(tempLineStorageString);
+    //Split by comma
+    while (getline(tempLineStorageStream, tempColumnString, ','))
+    {
+      //Put our final data in another stream
+      std::stringstream tempColumnStream(tempColumnString);
+      //Convert string to int
+      tempColumnStream >> tempColumnInt;
+      //Push our int to our list to be read into the motors
+      rawCSVList.push_back(tempColumnInt);
     }
-    csvData.push_back(rowData);
   }
-  controlMotors(csvData);
-}
-
-/**
- * @brief Reads data from a vector to Vex motors
- *
- * @param csvData Vector of vectors of ints. The first vector is the
- * header, which contains the motor ports. The second vector is the first
- * entry in the replay, and so on.
- */
-void controlMotors(std::vector<std::vector<int>> csvData) {
-  std::vector<int> header = csvData[0];
-  csvData.erase(csvData.begin());
-  for (int i : header) {
-    std::cout << i << std::endl;
-  }
-  for (std::vector<int> row : csvData) {
-    for (int i = 0; i < row.size(); i++) {
-      int motorNum = header[i];
-      int motorVelocity = row[i];
-      motor(motorNum).setVelocity(motorVelocity, rpm);
-    }
-    // Clear our vector to make space for the next 4 values
-    vex::wait(20, msec);
-  }
+  unorderedDataToMotor(rawCSVList, 7);
 }

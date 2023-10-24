@@ -1,8 +1,10 @@
-#include <vector>
+#include <memory>
+#include <list>
 #include <string>
 #include <memory>
 #include <sstream>
 #include <fstream>
 
-extern void writeReplay(std::vector<std::vector<int>> velocityData, std::string fileName);
-extern void readReplay(std::string fileName);
+extern void readSDDataToList();
+extern void nestedListToSD();
+extern std::list<std::list<int>> controllerInputs;
