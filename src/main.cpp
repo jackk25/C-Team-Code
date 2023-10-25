@@ -1,19 +1,3 @@
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Controller1          controller                    
-// Motor10              motor         10              
-// Motor11              motor         11              
-// MyGPS                gps           12              
-// ---- END VEXCODE CONFIGURED DEVICES ----
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Controller1          controller                    
-// Motor10              motor         10              
-// Motor11              motor         11              
-// GPS12                gps           12              
-// ---- END VEXCODE CONFIGURED DEVICES ----
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
@@ -23,28 +7,22 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Controller1          controller                    
-// Motor10              motor         10              
-// Motor11              motor         11              
-// ---- END VEXCODE CONFIGURED DEVICES ----
-
 #include "vex.h"
 
 using namespace vex;
 
 competition mainCompetition;
 
-drivetrain mainDrive(Motor10, Motor11);
+motor_group leftDrive(leftFront, leftBack);
+motor_group rightDrive(rightFront, rightBack);
+smartdrive mainDrive(leftDrive, rightDrive, GPS15, 320, 365, 260, mm, 1);
 
 void autonCode() {}
 
 void driveCode() {
   while(true) {
-    Motor10.spin(forward, -Controller1.Axis2.position(), pct);
-    Motor11.spin(forward, Controller1.Axis3.position(), pct);
+    leftDrive.spin(forward, -Controller1.Axis2.position(), pct);
+    rightDrive.spin(forward, Controller1.Axis3.position(), pct);
   }
 }
 
