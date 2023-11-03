@@ -1,1 +1,2 @@
-extern int driveToPoint;
+extern int driveToPoint();
+extern int hopeThisWorks();
