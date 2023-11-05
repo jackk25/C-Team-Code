@@ -64,6 +64,8 @@ int hopeThisWorks(){
     Brain.Screen.setCursor(3, 1);
     printPosition();
   }
+
+  if(GPS15.xPosition(inches) > 0 || GPS15.yPosition(inches) > 0)
   return 0;
 }
 

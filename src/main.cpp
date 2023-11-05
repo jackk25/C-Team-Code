@@ -1,3 +1,54 @@
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Controller1          controller                    
+// IntakeMotor          motor         11              
+// rightFront           motor         14              
+// leftFront            motor         13              
+// leftBack             motor         1               
+// rightBack            motor         12              
+// GPS15                gps           15              
+// Launcher1            motor         2               
+// Launcher2            motor         3               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Controller1          controller                    
+// IntakeMotor          motor         11              
+// rightFront           motor         14              
+// leftFront            motor         13              
+// leftBack             motor         1               
+// rightBack            motor         12              
+// GPS15                gps           15              
+// Launcher1            motor         2               
+// Motor3               motor         3               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Controller1          controller                    
+// IntakeMotor          motor         11              
+// rightFront           motor         14              
+// leftFront            motor         13              
+// leftBack             motor         1               
+// rightBack            motor         12              
+// GPS15                gps           15              
+// Motor2               motor         2               
+// Motor3               motor         3               
+// ---- END VEXCODE CONFIGURED DEVICES ----
+// ---- START VEXCODE CONFIGURED DEVICES ----
+// Robot Configuration:
+// [Name]               [Type]        [Port(s)]
+// Controller1          controller                    
+// IntakeMotor          motor         11              
+// rightFront           motor         14              
+// leftFront            motor         13              
+// leftBack             motor         1               
+// rightBack            motor         12              
+// GPS15                gps           15              
+// Motor2               motor         2               
+// ---- END VEXCODE CONFIGURED DEVICES ----
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*    Module:       main.cpp                                                  */
@@ -31,4 +82,14 @@ int main() {
   vexcodeInit();
   mainCompetition.autonomous(autonCode);
   mainCompetition.drivercontrol(driveCode);
+}
+
+int launcher() {
+  Launcher1.setVelocity(10, percent);
+  Launcher2.setVelocity(10, percent);
+  while(true){
+    Launcher1.spin(reverse);
+    Launcher2.spin(forward);
+  }
+  return 0;
 }

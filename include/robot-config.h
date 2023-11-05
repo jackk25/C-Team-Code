@@ -10,6 +10,8 @@ extern motor leftFront;
 extern motor leftBack;
 extern motor rightBack;
 extern gps GPS15;
+extern motor Launcher1;
+extern motor Launcher2;
 
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
