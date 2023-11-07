@@ -60,12 +60,15 @@ int hopeThisWorks(){
   Brain.Screen.setCursor(3, 1);
 
   while(GPS15.xPosition(inches) < 30 || GPS15.yPosition(inches) < 30){
+    Brain.Screen.clearScreen();
     mainDrive.drive(forward);
     Brain.Screen.setCursor(3, 1);
     printPosition();
+    wait(20, msec);
   }
 
-  if(GPS15.xPosition(inches) > 0 || GPS15.yPosition(inches) > 0)
+  //if(GPS15.xPosition(inches) > 0 || GPS15.yPosition(inches) > 0)
+  //mainDrive.stop();
   return 0;
 }
 

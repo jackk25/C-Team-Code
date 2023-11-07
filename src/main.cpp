@@ -59,6 +59,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include "gps.h"
 
 using namespace vex;
 
@@ -68,12 +69,14 @@ motor_group leftDrive(leftFront, leftBack);
 motor_group rightDrive(rightFront, rightBack);
 smartdrive mainDrive(leftDrive, rightDrive, GPS15, 320, 365, 260, mm, 1);
 
-void autonCode() {}
+void autonCode() {
+  hopeThisWorks();
+}
 
 void driveCode() {
   while(true) {
-    leftDrive.spin(forward, -Controller1.Axis2.position(), pct);
-    rightDrive.spin(forward, Controller1.Axis3.position(), pct);
+    leftDrive.spin(forward, Controller1.Axis3.position(), pct);
+    rightDrive.spin(forward, Controller1.Axis2.position(), pct);
   }
 }
 
