@@ -17,22 +17,55 @@ competition mainCompetition;
 
 motor_group leftDrive(leftFront, leftBack);
 motor_group rightDrive(rightFront, rightBack);
-drivetrain mainDrive(leftDrive, rightDrive, 320, 365, 260, mm, 1);
+drivetrain mainDrive = drivetrain(leftDrive, rightDrive, 319.19, 320, 260, mm, 1);
 
-void autonCode() {}
+motor intake = motor(PORT9, ratio18_1, false);
+motor launcherMotorA = motor(PORT10, ratio18_1, false);
+motor launcherMotorB = motor(PORT20, ratio18_1, true);
+motor_group launcher = motor_group(launcherMotorA, launcherMotorB);
+
+void autonControl(){
+  mainDrive.driveFor(forward, 46, inches);
+  mainDrive.turnFor(right, 45, degrees);
+  mainDrive.driveFor(forward, 6, inches);
+  intake.spin(reverse);
+  mainDrive.driveFor(reverse, 12, inches);
+  //DESTROY THE GOAL!!!!
+  mainDrive.setDriveVelocity(75, pct);
+  mainDrive.driveFor(forward, 20, inches);
+  mainDrive.setDriveVelocity(50, pct);
+  mainDrive.driveFor(reverse, 12, inches);
+}
 
 
-void motorSpin(motor dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
+void motorSpin(motor_group dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
   int motorSpeed = (positiveButtonState * spinRate) - (negativeButtonState * spinRate);
   dstMotor.spin(forward, motorSpeed, percent);
+}
+
+bool oppositeSigns(int x, int y)
+{
+    return ((x ^ y) < 0);
 }
 
 void driveCode() {
   Controller1.ButtonA.pressed(nestedListToSD);
   while(true) {
-    leftDrive.spin(forward, Controller1.Axis3.position(), pct);
-    rightDrive.spin(forward, -Controller1.Axis2.position(), pct);
-    motorSpin(IntakeMotor, Controller1.ButtonL1.pressing(), Controller1.ButtonR1.pressing(), 100);
+    int32_t leftDriveStrength = Controller1.Axis3.position()/1.25;
+    int32_t rightDriveStrength = Controller1.Axis2.position()/1.25;
+
+
+    //Drive strength modifier for turning
+    if(oppositeSigns(leftDriveStrength, rightDriveStrength)){
+      leftDriveStrength = leftDriveStrength/1.5;
+      rightDriveStrength = rightDriveStrength/1.5;
+    }
+
+    leftDrive.spin(forward, leftDriveStrength, pct);
+    rightDrive.spin(forward, rightDriveStrength, pct);
+
+    motorSpin(intake, Controller1.ButtonL1.pressing(), Controller1.ButtonL2.pressing(), 100);
+    motorSpin(launcher, false, Controller1.ButtonR1.pressing(), 100);
   }
 }
 
@@ -40,6 +73,6 @@ int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
-  mainCompetition.autonomous(autonCode);
+  mainCompetition.autonomous(autonControl);
   mainCompetition.drivercontrol(driveCode);
 }
