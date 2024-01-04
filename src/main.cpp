@@ -8,6 +8,8 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include "replay.h"
+#include <vector>
 
 using namespace vex;
 
@@ -19,12 +21,14 @@ drivetrain mainDrive(leftDrive, rightDrive, 320, 365, 260, mm, 1);
 
 void autonCode() {}
 
+
 void motorSpin(motor dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
   int motorSpeed = (positiveButtonState * spinRate) - (negativeButtonState * spinRate);
   dstMotor.spin(forward, motorSpeed, percent);
 }
 
 void driveCode() {
+  Controller1.ButtonA.pressed(nestedListToSD);
   while(true) {
     leftDrive.spin(forward, Controller1.Axis3.position(), pct);
     rightDrive.spin(forward, -Controller1.Axis2.position(), pct);
@@ -35,6 +39,7 @@ void driveCode() {
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+
   mainCompetition.autonomous(autonCode);
   mainCompetition.drivercontrol(driveCode);
 }
