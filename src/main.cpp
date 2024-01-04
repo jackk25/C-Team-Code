@@ -7,14 +7,6 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-// ---- START VEXCODE CONFIGURED DEVICES ----
-// Robot Configuration:
-// [Name]               [Type]        [Port(s)]
-// Controller1          controller                    
-// Motor10              motor         10              
-// Motor11              motor         11              
-// ---- END VEXCODE CONFIGURED DEVICES ----
-
 #include "vex.h"
 #include "replay.h"
 #include <vector>
@@ -23,26 +15,24 @@ using namespace vex;
 
 competition mainCompetition;
 
-drivetrain mainDrive(Motor10, Motor11);
+motor_group leftDrive(leftFront, leftBack);
+motor_group rightDrive(rightFront, rightBack);
+drivetrain mainDrive(leftDrive, rightDrive, 320, 365, 260, mm, 1);
 
 void autonCode() {}
 
-std::vector<motor> trackedMotors = {Motor10, Motor11};
 
-std::vector<std::vector<int>> motorData;
+void motorSpin(motor dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
+  int motorSpeed = (positiveButtonState * spinRate) - (negativeButtonState * spinRate);
+  dstMotor.spin(forward, motorSpeed, percent);
+}
 
 void driveCode() {
   Controller1.ButtonA.pressed(nestedListToSD);
   while(true) {
-    Motor10.spin(forward, -Controller1.Axis2.position(), pct);
-    Motor11.spin(forward, Controller1.Axis3.position(), pct);
-
-    std::vector<int> capturedData;
-
-    for (motor motorVar : trackedMotors) {
-      capturedData.push_back(motorVar.velocity(rpm));
-    }
-    motorData.push_back(capturedData);
+    leftDrive.spin(forward, Controller1.Axis3.position(), pct);
+    rightDrive.spin(forward, -Controller1.Axis2.position(), pct);
+    motorSpin(IntakeMotor, Controller1.ButtonL1.pressing(), Controller1.ButtonR1.pressing(), 100);
   }
 }
 
