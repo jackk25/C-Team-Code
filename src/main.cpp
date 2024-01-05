@@ -37,6 +37,63 @@ void autonControl(){
   mainDrive.driveFor(reverse, 12, inches);
 }
 
+class ScreenContainer;
+class ScreenButton;
+
+struct Point{
+  int x, y;
+};
+
+typedef struct Point Point;
+
+class ScreenButton{
+  Point p1;
+  Point p2;
+  char buttonText[256];
+
+  void (*execute)();
+
+  void draw(){
+    int width = p2.x-p1.x;
+    int height = p2.y+p1.y;
+    Brain.Screen.drawRectangle(p1.x, p1.y, width, height);
+
+    // Center aligned vertically, left aligned horizontally
+    Brain.Screen.setCursor(p1.y + (height / 2), p1.x);
+    Brain.Screen.print(buttonText);
+  }
+
+  public:
+    ScreenButton(Point topLeftPosition, int width, int height, void (*execute)()){
+      p1 = topLeftPosition;
+      p2.x = p1.x + width;
+      p2.y = p2.y - height;
+    }
+
+    void isWithin(Point touchPoint){
+      if(touchPoint.y <= p1.y && touchPoint.y >= p2.y && touchPoint.x >= p1.x && touchPoint.x <= p2.x){
+        execute();
+      }
+    }
+};
+
+class ScreenContainer{
+  static std::vector<ScreenButton> buttons;
+
+  public:
+    static void runThroughButtons(){
+      Point touchPoint = {Brain.Screen.xPosition(), Brain.Screen.yPosition()};
+      for(int i = 0; i > buttons.size(); i++){
+        buttons[i].isWithin(touchPoint);
+      }
+    }
+
+    void createButton(Point p1, int width, int height, void (*execute)()){
+      ScreenButton btn(p1, width, height, execute);
+      buttons.push_back(btn);
+    }
+};
+
 
 void motorSpin(motor_group dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
   int motorSpeed = (positiveButtonState * spinRate) - (negativeButtonState * spinRate);
@@ -73,6 +130,9 @@ int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
+  ScreenContainer ScreenContainer;
+
   mainCompetition.autonomous(autonControl);
   mainCompetition.drivercontrol(driveCode);
+  Brain.Screen.pressed(ScreenContainer.runThroughButtons);
 }
