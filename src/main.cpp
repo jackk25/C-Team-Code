@@ -49,25 +49,29 @@ typedef struct Point Point;
 class ScreenButton{
   Point p1;
   Point p2;
-  char buttonText[256];
+  std::string buttonText;
 
   void (*execute)();
 
   void draw(){
     int width = p2.x-p1.x;
-    int height = p2.y+p1.y;
+    int height = p2.y-p1.y;
     Brain.Screen.drawRectangle(p1.x, p1.y, width, height);
 
     // Center aligned vertically, left aligned horizontally
-    Brain.Screen.setCursor(p1.y + (height / 2), p1.x);
-    Brain.Screen.print(buttonText);
+    //Brain.Screen.setCursor(p1.y + (height / 2), p1.x);
+    //Brain.Screen.print(buttonText);
   }
 
   public:
-    ScreenButton(Point topLeftPosition, int width, int height, void (*execute)()){
+    ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)()){
       p1 = topLeftPosition;
       p2.x = p1.x + width;
-      p2.y = p2.y - height;
+      p2.y = p1.y - height;
+
+      execute = inputFunc;
+
+      draw();
     }
 
     void isWithin(Point touchPoint){
@@ -75,20 +79,24 @@ class ScreenButton{
         execute();
       }
     }
+
+    void setText(std::string input){
+      buttonText = input;
+    }
 };
 
 class ScreenContainer{
-  static std::vector<ScreenButton> buttons;
+  std::vector<ScreenButton> buttons;
 
   public:
-    static void runThroughButtons(){
+    void runThroughButtons(){
       Point touchPoint = {Brain.Screen.xPosition(), Brain.Screen.yPosition()};
-      for(int i = 0; i > buttons.size(); i++){
-        buttons[i].isWithin(touchPoint);
+      for(auto foo : buttons){
+        foo.isWithin(touchPoint);
       }
     }
 
-    void createButton(Point p1, int width, int height, void (*execute)()){
+    void createButton(Point p1, void (*execute)(), int width = 60, int height = 60){
       ScreenButton btn(p1, width, height, execute);
       buttons.push_back(btn);
     }
@@ -126,13 +134,33 @@ void driveCode() {
   }
 }
 
+void foo(){
+  Controller1.rumble(".");
+}
+
+void bar(){
+  Controller1.rumble("..");
+}
+
+ScreenContainer blah;
+
+static void foobar(){
+  blah.runThroughButtons();
+}
+
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
-  ScreenContainer ScreenContainer;
 
   mainCompetition.autonomous(autonControl);
   mainCompetition.drivercontrol(driveCode);
-  Brain.Screen.pressed(ScreenContainer.runThroughButtons);
+  Brain.Screen.pressed(foobar);
+  Brain.Screen.setFillColor(blue);
+  blah.createButton({20, 100}, foo);
+  Brain.Screen.setFillColor(red);
+  blah.createButton({100, 100}, bar);
+
+  Brain.Screen.setFillColor(green);
+  blah.createButton({180, 100}, autonControl);
 }
