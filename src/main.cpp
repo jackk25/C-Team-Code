@@ -9,7 +9,7 @@
 
 #include "vex.h"
 #include "replay.h"
-#include <vector>
+#include "screen.h"
 
 using namespace vex;
 
@@ -37,80 +37,15 @@ void autonControl(){
   mainDrive.driveFor(reverse, 12, inches);
 }
 
-class ScreenContainer;
-class ScreenButton;
-
-struct Point{
-  int x, y;
-};
-
-typedef struct Point Point;
-
-class ScreenButton{
-  Point p1;
-  Point p2;
-  std::string buttonText;
-
-  void (*execute)();
-
-  void draw(){
-    int width = p2.x-p1.x;
-    int height = p2.y-p1.y;
-    Brain.Screen.drawRectangle(p1.x, p1.y, width, height);
-
-    // Center aligned vertically, left aligned horizontally
-    //Brain.Screen.setCursor(p1.y + (height / 2), p1.x);
-    //Brain.Screen.print(buttonText);
-  }
-
-  public:
-    ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)()){
-      p1 = topLeftPosition;
-      p2.x = p1.x + width;
-      p2.y = p1.y - height;
-
-      execute = inputFunc;
-
-      draw();
-    }
-
-    void isWithin(Point touchPoint){
-      if(touchPoint.y <= p1.y && touchPoint.y >= p2.y && touchPoint.x >= p1.x && touchPoint.x <= p2.x){
-        execute();
-      }
-    }
-
-    void setText(std::string input){
-      buttonText = input;
-    }
-};
-
-class ScreenContainer{
-  std::vector<ScreenButton> buttons;
-
-  public:
-    void runThroughButtons(){
-      Point touchPoint = {Brain.Screen.xPosition(), Brain.Screen.yPosition()};
-      for(auto foo : buttons){
-        foo.isWithin(touchPoint);
-      }
-    }
-
-    void createButton(Point p1, void (*execute)(), int width = 60, int height = 60){
-      ScreenButton btn(p1, width, height, execute);
-      buttons.push_back(btn);
-    }
-};
-
-
-void motorSpin(motor_group dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
+void motorSpin(motor_group dstMotor, 
+              bool positiveButtonState, bool negativeButtonState, int spinRate){
   int motorSpeed = (positiveButtonState * spinRate) - (negativeButtonState * spinRate);
   dstMotor.spin(forward, motorSpeed, percent);
 }
 
 bool oppositeSigns(int x, int y)
 {
-    return ((x ^ y) < 0);
+  return ((x ^ y) < 0);
 }
 
 void driveCode() {
@@ -118,7 +53,6 @@ void driveCode() {
   while(true) {
     int32_t leftDriveStrength = Controller1.Axis3.position()/1.25;
     int32_t rightDriveStrength = Controller1.Axis2.position()/1.25;
-
 
     //Drive strength modifier for turning
     if(oppositeSigns(leftDriveStrength, rightDriveStrength)){
@@ -142,25 +76,31 @@ void bar(){
   Controller1.rumble("..");
 }
 
-ScreenContainer blah;
+ScreenContainer container;
 
-static void foobar(){
-  blah.runThroughButtons();
+static void runThroughButtons(){
+  container.runThroughButtons();
+}
+
+void createButtons(){
+  // Fun Buttons
+  Brain.Screen.setFillColor(blue);
+  container.createButton({20, 100}, foo, "Beep");
+  Brain.Screen.setFillColor(red);
+  container.createButton({100, 100}, bar, "Buzz");
+  Brain.Screen.setFillColor(green);
+
+  //Run auton
+  container.createButton({180, 100}, autonControl, "Auton");
 }
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
+  createButtons();
 
   mainCompetition.autonomous(autonControl);
   mainCompetition.drivercontrol(driveCode);
-  Brain.Screen.pressed(foobar);
-  Brain.Screen.setFillColor(blue);
-  blah.createButton({20, 100}, foo);
-  Brain.Screen.setFillColor(red);
-  blah.createButton({100, 100}, bar);
-
-  Brain.Screen.setFillColor(green);
-  blah.createButton({180, 100}, autonControl);
+  Brain.Screen.pressed(runThroughButtons);
 }
