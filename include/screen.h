@@ -29,7 +29,6 @@ class ScreenButton{
     void setText(std::string input);
 };
 
-
 class ScreenContainer{
   std::vector<ScreenButton> buttons;
 

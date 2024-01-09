@@ -90,8 +90,11 @@ void createButtons(){
   container.createButton({100, 100}, bar, "Buzz");
   Brain.Screen.setFillColor(green);
 
-  //Run auton
-  container.createButton({180, 100}, autonControl, "Auton");
+
+  //Auton Control
+  container.createButton({100, 200}, foo, "<", 0, 0);
+  container.createButton({200, 200}, autonControl, "Play", 0, 0);
+  container.createButton({300, 200}, foo, ">");
 }
 
 int main() {
