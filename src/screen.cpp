@@ -5,10 +5,12 @@ void ScreenButton::draw(){
     int width = p2.x-p1.x;
     int height = p2.y-p1.y;
 
+    int strWidth = Brain.Screen.getStringWidth(buttonText.c_str());
+
     //Auto Size Support
     if(!buttonText.empty()){
         if(width == 0){
-            width = Brain.Screen.getStringWidth(buttonText.c_str());
+            width = strWidth;
         }
         if(height == 0){
             height = Brain.Screen.getStringHeight(buttonText.c_str());
@@ -17,25 +19,25 @@ void ScreenButton::draw(){
 
     Brain.Screen.drawRectangle(p1.x, p1.y, width, height);
 
-    // Center aligned vertically, left aligned horizontally
-    Brain.Screen.setCursor(p1.y + (height / 2), p1.x);
-    Brain.Screen.print(buttonText.c_str());
+    // Center aligned horizontally and vertically (Thanks Kayla!)
+    Brain.Screen.printAt(p1.x + (width/2 - (strWidth/2)), p1.y + (height / 2), buttonText.c_str());
 }
 
-ScreenButton::ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(), std::string text){
+ScreenButton::ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(int id), std::string text, int id){
     p1 = topLeftPosition;
     p2.x = p1.x + width;
     p2.y = p1.y - height;
 
     execute = inputFunc;
     buttonText = text;
+    buttonid = id;
 
     draw();
 }
 
 void ScreenButton::isWithin(Point touchPoint){
     if(touchPoint.y <= p1.y && touchPoint.y >= p2.y && touchPoint.x >= p1.x && touchPoint.x <= p2.x){
-        execute();
+        execute(this->buttonid);
     }
 }
 
@@ -55,8 +57,9 @@ void ScreenContainer::runThroughButtons(){
     }
 }
 
-ScreenButton ScreenContainer::createButton(Point p1, void (*execute)(), std::string text, int width, int height){
-    ScreenButton btn(p1, width, height, execute, text);
+ScreenButton ScreenContainer::createButton(Point p1, void (*execute)(int id), std::string text, int width, int height){
+    ScreenButton btn(p1, width, height, execute, text, this->idCount);
+    idCount++;
     buttons.push_back(btn);
 
     return btn;

@@ -68,12 +68,13 @@ void driveCode() {
   }
 }
 
-void foo(){
-  Controller1.rumble(".");
-}
-
-void bar(){
-  Controller1.rumble("..");
+void rumbleTest(int id){
+  if(id == 0 || id == 2) {
+      Controller1.rumble(".");
+  }
+  else if(id == 1 || id == 3){
+      Controller1.rumble("..");
+  }
 }
 
 ScreenContainer container;
@@ -85,16 +86,15 @@ static void runThroughButtons(){
 void createButtons(){
   // Fun Buttons
   Brain.Screen.setFillColor(blue);
-  container.createButton({20, 100}, foo, "Beep");
+  container.createButton({20, 100}, rumbleTest, "Beep");
   Brain.Screen.setFillColor(red);
-  container.createButton({100, 100}, bar, "Buzz");
+  container.createButton({100, 100}, rumbleTest, "Buzz");
   Brain.Screen.setFillColor(green);
 
 
   //Auton Control
-  container.createButton({100, 200}, foo, "<", 0, 0);
-  container.createButton({200, 200}, autonControl, "Play", 0, 0);
-  container.createButton({300, 200}, foo, ">");
+  container.createButton({100, 200}, rumbleTest, "<");
+  container.createButton({300, 200}, rumbleTest, ">");
 }
 
 int main() {

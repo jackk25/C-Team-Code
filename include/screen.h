@@ -14,13 +14,14 @@ class ScreenButton{
   Point p1;
   Point p2;
   std::string buttonText;
+  int buttonid;
 
-  void (*execute)();
+  void (*execute)(int id);
 
   void draw();
 
   public:
-    ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(), std::string text);
+    ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(int id), std::string text, int id);
     
     void isWithin(Point touchPoint);
 
@@ -31,9 +32,10 @@ class ScreenButton{
 
 class ScreenContainer{
   std::vector<ScreenButton> buttons;
+  int idCount;
 
   public:
     void runThroughButtons();
 
-    ScreenButton createButton(Point p1, void (*execute)(), std::string text = "", int width = 60, int height = 60);
+    ScreenButton createButton(Point p1, void (*execute)(int id), std::string text = "", int width = 60, int height = 60);
 };
