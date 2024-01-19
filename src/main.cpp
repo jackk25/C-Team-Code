@@ -10,6 +10,7 @@
 #include "vex.h"
 #include "replay.h"
 #include "screen.h"
+#include <vector>
 
 using namespace vex;
 
@@ -35,6 +36,14 @@ void autonControl(){
   mainDrive.driveFor(forward, 20, inches);
   mainDrive.setDriveVelocity(50, pct);
   mainDrive.driveFor(reverse, 12, inches);
+  launcher.spin(forward);
+  Brain.Screen.print("AUton 1");
+}
+
+void autonControl2(){
+  mainDrive.driveFor(forward, 46, inches);
+  launcher.spin(forward);
+  Brain.Screen.print("AUton 2");
 }
 
 void motorSpin(motor_group dstMotor, 
@@ -77,10 +86,35 @@ void rumbleTest(int id){
   }
 }
 
+std::vector<void (*)()> autonList = {
+  autonControl,
+  autonControl2
+};
+
+int currentAutonId = 0;
+
+void switchAuton(int buttonId){
+  if(buttonId == 2){
+    // Push it left
+    currentAutonId--;
+    Controller1.rumble(".");
+  }
+  if(buttonId == 3){
+    // Push it right
+    currentAutonId++;
+    Controller1.rumble(".");
+  }
+}
+
 ScreenContainer container;
 
-static void runThroughButtons(){
+void runThroughButtons(){
   container.runThroughButtons();
+}
+
+void getAuton(){
+  mainCompetition.autonomous(autonList[currentAutonId]);
+  mainCompetition.test_auton();
 }
 
 void createButtons(){
@@ -91,10 +125,9 @@ void createButtons(){
   container.createButton({100, 100}, rumbleTest, "Buzz");
   Brain.Screen.setFillColor(green);
 
-
   //Auton Control
-  container.createButton({100, 200}, rumbleTest, "<");
-  container.createButton({300, 200}, rumbleTest, ">");
+  container.createButton({100, 200}, switchAuton, "<");
+  container.createButton({300, 200}, switchAuton, ">");
 }
 
 int main() {
