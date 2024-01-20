@@ -25,25 +25,28 @@ motor launcherMotorA = motor(PORT10, ratio18_1, false);
 motor launcherMotorB = motor(PORT20, ratio18_1, true);
 motor_group launcher = motor_group(launcherMotorA, launcherMotorB);
 
-void autonControl(){
-  mainDrive.driveFor(forward, 46, inches);
-  mainDrive.turnFor(right, 45, degrees);
-  mainDrive.driveFor(forward, 6, inches);
-  intake.spin(reverse);
-  mainDrive.driveFor(reverse, 12, inches);
-  //DESTROY THE GOAL!!!!
-  mainDrive.setDriveVelocity(75, pct);
-  mainDrive.driveFor(forward, 20, inches);
-  mainDrive.setDriveVelocity(50, pct);
-  mainDrive.driveFor(reverse, 12, inches);
-  launcher.spin(forward);
-  Brain.Screen.print("AUton 1");
-}
+bool skills = false;
 
-void autonControl2(){
-  mainDrive.driveFor(forward, 46, inches);
-  launcher.spin(forward);
-  Brain.Screen.print("AUton 2");
+void autonControl(){
+  if (skills == false){
+    Brain.Screen.print("Competition!");
+    mainDrive.driveFor(forward, 46, inches);
+    mainDrive.turnFor(right, 45, degrees);
+    mainDrive.driveFor(forward, 6, inches);
+    intake.spin(reverse);
+    mainDrive.driveFor(reverse, 12, inches);
+    //DESTROY THE GOAL!!!!
+    mainDrive.setDriveVelocity(75, pct);
+    mainDrive.driveFor(forward, 20, inches);
+    mainDrive.setDriveVelocity(50, pct);
+    mainDrive.driveFor(reverse, 12, inches);
+    intake.spin(forward);
+  }
+  if (skills){
+    Brain.Screen.print("Skills!");
+    launcher.setVelocity(100, pct);
+    launcher.spin(forward);
+  }
 }
 
 void motorSpin(motor_group dstMotor, 
@@ -86,23 +89,13 @@ void rumbleTest(int id){
   }
 }
 
-std::vector<void (*)()> autonList = {
-  autonControl,
-  autonControl2
-};
-
-int currentAutonId = 0;
-
 void switchAuton(int buttonId){
+  Controller1.rumble(".");
   if(buttonId == 2){
-    // Push it left
-    currentAutonId--;
-    Controller1.rumble(".");
+    skills = false;
   }
   if(buttonId == 3){
-    // Push it right
-    currentAutonId++;
-    Controller1.rumble(".");
+    skills = true;
   }
 }
 
@@ -112,22 +105,20 @@ void runThroughButtons(){
   container.runThroughButtons();
 }
 
-void getAuton(){
-  mainCompetition.autonomous(autonList[currentAutonId]);
-  mainCompetition.test_auton();
-}
-
 void createButtons(){
   // Fun Buttons
   Brain.Screen.setFillColor(blue);
   container.createButton({20, 100}, rumbleTest, "Beep");
   Brain.Screen.setFillColor(red);
+
   container.createButton({100, 100}, rumbleTest, "Buzz");
   Brain.Screen.setFillColor(green);
 
   //Auton Control
-  container.createButton({100, 200}, switchAuton, "<");
-  container.createButton({300, 200}, switchAuton, ">");
+  Brain.Screen.setFillColor(purple);
+  container.createButton({100, 200}, switchAuton, "Competition");
+  Brain.Screen.setFillColor(cyan);
+  container.createButton({300, 200}, switchAuton, "Skills");
 }
 
 int main() {
