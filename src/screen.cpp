@@ -5,26 +5,28 @@ void ScreenButton::draw(){
     int width = p2.x-p1.x;
     int height = p2.y-p1.y;
 
-    int strWidth = Brain.Screen.getStringWidth(buttonText.c_str());
+    Brain.Screen.drawRectangle(p1.x, p1.y, width, height);
+
+    // Center aligned horizontally and vertically (Thanks Kayla!)
+    Brain.Screen.printAt(
+        p1.x + (width/2 - (Brain.Screen.getStringWidth(buttonText.c_str())/2)), 
+        p1.y + (height / 2), buttonText.c_str()
+    );
+}
+
+ScreenButton::ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(int id), std::string text, int id){
+    p1 = topLeftPosition;
 
     //Auto Size Support
     if(!buttonText.empty()){
         if(width == 0){
-            width = strWidth;
+            width = Brain.Screen.getStringWidth(buttonText.c_str());;
         }
         if(height == 0){
             height = Brain.Screen.getStringHeight(buttonText.c_str());
         }
     }
 
-    Brain.Screen.drawRectangle(p1.x, p1.y, width, height);
-
-    // Center aligned horizontally and vertically (Thanks Kayla!)
-    Brain.Screen.printAt(p1.x + (width/2 - (strWidth/2)), p1.y + (height / 2), buttonText.c_str());
-}
-
-ScreenButton::ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(int id), std::string text, int id){
-    p1 = topLeftPosition;
     p2.x = p1.x + width;
     p2.y = p1.y - height;
 

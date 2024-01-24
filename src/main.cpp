@@ -8,9 +8,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
-#include "replay.h"
 #include "screen.h"
-#include <vector>
 
 using namespace vex;
 
@@ -21,9 +19,7 @@ motor_group rightDrive(rightFront, rightBack);
 drivetrain mainDrive = drivetrain(leftDrive, rightDrive, 319.19, 320, 260, mm, 1);
 
 motor intake = motor(PORT9, ratio18_1, false);
-motor launcherMotorA = motor(PORT10, ratio18_1, false);
-motor launcherMotorB = motor(PORT20, ratio18_1, true);
-motor_group launcher = motor_group(launcherMotorA, launcherMotorB);
+motor launcher = motor(PORT20, ratio6_1, true);
 
 bool skills = false;
 
@@ -61,10 +57,9 @@ bool oppositeSigns(int x, int y)
 }
 
 void driveCode() {
-  Controller1.ButtonA.pressed(nestedListToSD);
   while(true) {
-    int32_t leftDriveStrength = Controller1.Axis3.position()/1.25;
-    int32_t rightDriveStrength = Controller1.Axis2.position()/1.25;
+    int32_t leftDriveStrength = Controller1.Axis3.position();
+    int32_t rightDriveStrength = Controller1.Axis2.position();
 
     //Drive strength modifier for turning
     if(oppositeSigns(leftDriveStrength, rightDriveStrength)){

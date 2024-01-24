@@ -106,36 +106,6 @@
         "drive": "none",
         "id": "primary"
       }
-    },
-    {
-      "port": [
-        10
-      ],
-      "name": "Motor10",
-      "customName": false,
-      "deviceType": "Motor",
-      "setting": {
-        "reversed": "false",
-        "fwd": "forward",
-        "rev": "reverse",
-        "gear": "ratio18_1",
-        "id": "partner"
-      }
-    },
-    {
-      "port": [
-        11
-      ],
-      "name": "Motor11",
-      "customName": false,
-      "deviceType": "Motor",
-      "setting": {
-        "reversed": "false",
-        "fwd": "forward",
-        "rev": "reverse",
-        "gear": "ratio18_1",
-        "id": "partner"
-      }
     }
   ],
   "neverUpdate": null
