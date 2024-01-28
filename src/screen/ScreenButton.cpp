@@ -33,8 +33,6 @@ ScreenButton::ScreenButton(Point topLeftPosition, int width, int height, void (*
     execute = inputFunc;
     buttonText = text;
     buttonid = id;
-
-    draw();
 }
 
 void ScreenButton::isWithin(Point touchPoint){

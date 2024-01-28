@@ -1,6 +1,13 @@
 #include "screen/ScreenContainer.h"
 #include "vex.h"
 
+void ScreenContainer::draw(){
+    Brain.Screen.clearScreen();
+    for(ScreenButton btn : buttons){
+        btn.draw();
+    }
+}
+
 void ScreenContainer::runThroughButtons(){
     Point touchPoint = {Brain.Screen.xPosition(), Brain.Screen.yPosition()};
     for(ScreenButton btn : buttons){

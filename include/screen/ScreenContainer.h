@@ -5,6 +5,7 @@ class ScreenContainer{
   int idCount;
 
   public:
+    void draw();
     void runThroughButtons();
 
     ScreenButton createButton(Point p1, void (*execute)(int id), std::string text = "", int width = 60, int height = 60);

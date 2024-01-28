@@ -18,11 +18,11 @@ class ScreenButton{
 
   void (*execute)(int id);
 
-  void draw();
 
   public:
     ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(int id), std::string text, int id);
     
+    void draw();
     void isWithin(Point touchPoint);
 
     //----- GETTERS / SETTERS ----//

@@ -114,6 +114,8 @@ void createButtons(){
   container.createButton({100, 200}, switchAuton, "Competition");
   Brain.Screen.setFillColor(cyan);
   container.createButton({300, 200}, switchAuton, "Skills");
+
+  container.draw();
 }
 
 int main() {
