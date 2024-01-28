@@ -8,7 +8,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
-#include "screen.h"
+#include "screen/ScreenContainer.h"
 
 using namespace vex;
 
