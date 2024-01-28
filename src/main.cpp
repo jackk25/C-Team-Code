@@ -102,18 +102,27 @@ void runThroughButtons(){
 
 void createButtons(){
   // Fun Buttons
-  Brain.Screen.setFillColor(blue);
-  container.createButton({20, 100}, rumbleTest, "Beep");
-  Brain.Screen.setFillColor(red);
 
-  container.createButton({100, 100}, rumbleTest, "Buzz");
-  Brain.Screen.setFillColor(green);
+  Brain.Screen.setFillColor(blue);
+  ScreenButton beepBtn = ScreenButton(0, {20, 100}, rumbleTest, "Beep");
+  container.addButton(beepBtn);
+  //container.createButton({20, 100}, rumbleTest, "Beep");
+  
+  Brain.Screen.setFillColor(red);
+  ScreenButton buzzButton = ScreenButton(1, {100, 100}, rumbleTest, "Buzz");
+  container.addButton(buzzButton);
+  //container.createButton({100, 100}, rumbleTest, "Buzz");
 
   //Auton Control
   Brain.Screen.setFillColor(purple);
-  container.createButton({100, 200}, switchAuton, "Competition");
+  ScreenButton compButton = ScreenButton(2, {100, 200}, switchAuton, "Competition");
+  container.addButton(compButton);
+  //container.createButton({100, 200}, switchAuton, "Competition");
+
   Brain.Screen.setFillColor(cyan);
-  container.createButton({300, 200}, switchAuton, "Skills");
+  ScreenButton skillsButton = ScreenButton(3, {300, 200}, switchAuton, "Skills");
+  container.addButton(skillsButton);
+  //container.createButton({300, 200}, switchAuton, "Skills");
 
   container.draw();
 }

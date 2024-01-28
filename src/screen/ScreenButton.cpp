@@ -14,7 +14,7 @@ void ScreenButton::draw(){
     );
 }
 
-ScreenButton::ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(int id), std::string text, int id){
+ScreenButton::ScreenButton(int id, Point topLeftPosition, void (*inputFunc)(int id), std::string text, int width, int height){
     p1 = topLeftPosition;
 
     //Auto Size Support

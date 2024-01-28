@@ -15,10 +15,13 @@ void ScreenContainer::runThroughButtons(){
     }
 }
 
-ScreenButton ScreenContainer::createButton(Point p1, void (*execute)(int id), std::string text, int width, int height){
-    ScreenButton btn(p1, width, height, execute, text, this->idCount);
-    idCount++;
+void ScreenContainer::addButton(ScreenButton btn){
     buttons.push_back(btn);
+}
+
+ScreenButton ScreenContainer::createButton(Point p1, void (*execute)(int id), std::string text, int width, int height){
+    ScreenButton btn(this->idCount, p1, execute, text, width, height);
+    idCount++;
 
     return btn;
 }

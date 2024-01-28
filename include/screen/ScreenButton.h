@@ -20,7 +20,7 @@ class ScreenButton{
 
 
   public:
-    ScreenButton(Point topLeftPosition, int width, int height, void (*inputFunc)(int id), std::string text, int id);
+    ScreenButton(int id, Point topLeftPosition, void (*inputFunc)(int id), std::string text = "", int width = 60, int height = 60);
     
     void draw();
     void isWithin(Point touchPoint);

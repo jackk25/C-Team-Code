@@ -5,6 +5,7 @@ class ScreenContainer{
   int idCount;
 
   public:
+    void addButton(ScreenButton btn);
     void draw();
     void runThroughButtons();
 
