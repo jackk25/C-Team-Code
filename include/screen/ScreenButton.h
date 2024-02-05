@@ -1,37 +1,36 @@
 #include <vector>
 #include <string>
+#include "Point.h"
+#include "../vex.h"
 
-class ScreenContainer;
-class ScreenButton;
-
-struct Point{
-  int x, y;
-};
-
-typedef struct Point Point;
+#ifndef SCREENBUTTON
+#define SCREENBUTTON
 
 class ScreenButton{
   Point p1;
   Point p2;
   std::string buttonText;
-  int buttonid;
+  int buttonId;
   vex::color outlineColor;
   vex::color fillColor;
 
   void (*execute)(int id);
 
-
   public:
-    ScreenButton(int id, Point topLeftPosition, void (*inputFunc)(int id), std::string text = "", int width = 60, int height = 60);
+    ScreenButton();
     
     void draw();
     void isWithin(Point touchPoint);
 
     //----- GETTERS / SETTERS ----//
     std::string getText();
+    void setId(int id);
     void setPosition(Point position);
+    void setDimensions(int width, int height);
     void setText(std::string input);
     void setOutlineColor(vex::color color);
     void setFillColor(vex::color color);
     void setCallback(void (*callback)(int id));
 };
+
+#endif

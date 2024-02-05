@@ -5,6 +5,16 @@ void ScreenButton::draw(){
     int width = p2.x-p1.x;
     int height = p2.y-p1.y;
 
+    //Auto Size Support
+    if(!buttonText.empty()){
+        if(width == 0){
+            width = Brain.Screen.getStringWidth(buttonText.c_str());;
+        }
+        if(height == 0){
+            height = Brain.Screen.getStringHeight(buttonText.c_str());
+        }
+    }
+
     Brain.Screen.setPenColor(outlineColor);
     Brain.Screen.setFillColor(fillColor);
 
@@ -21,35 +31,23 @@ void ScreenButton::draw(){
     Brain.Screen.setFillColor(white);
 }
 
-ScreenButton::ScreenButton(int id, Point topLeftPosition, void (*inputFunc)(int id), std::string text, int width, int height){
-    p1 = topLeftPosition;
-
-    //Auto Size Support
-    if(!buttonText.empty()){
-        if(width == 0){
-            width = Brain.Screen.getStringWidth(buttonText.c_str());;
-        }
-        if(height == 0){
-            height = Brain.Screen.getStringHeight(buttonText.c_str());
-        }
-    }
-
-    p2.x = p1.x + width;
-    p2.y = p1.y - height;
-
-    execute = inputFunc;
-    buttonText = text;
-    buttonid = id;
-}
-
 void ScreenButton::isWithin(Point touchPoint){
     if(touchPoint.y <= p1.y && touchPoint.y >= p2.y && touchPoint.x >= p1.x && touchPoint.x <= p2.x){
-        execute(this->buttonid);
+        execute(this->buttonId);
     }
 }
 
 std::string ScreenButton::getText(){
     return buttonText;
+}
+
+void ScreenButton::setId(int id){
+    buttonId = id;
+}
+
+void ScreenButton::setDimensions(int width, int height){
+    p2.x = p1.x + width;
+    p2.y = p1.y - height;
 }
 
 void ScreenButton::setPosition(Point position){

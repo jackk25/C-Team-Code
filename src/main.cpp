@@ -8,6 +8,7 @@
 /*----------------------------------------------------------------------------*/
 
 #include "vex.h"
+#include "screen/ScreenButtonBuilder.h"
 #include "screen/ScreenContainer.h"
 
 using namespace vex;
@@ -104,25 +105,48 @@ void createButtons(){
   // Fun Buttons
 
   Brain.Screen.setFillColor(blue);
-  ScreenButton beepBtn = ScreenButton(0, {20, 100}, rumbleTest, "Beep");
+  ScreenButton beepBtn = ButtonBuilder()
+  .id(0)
+  .position({20, 100})
+  .dimensions(60, 60)
+  .callback(rumbleTest)
+  .text("Beep")
+  .fillColor(blue)
+  .build();
+
   container.addButton(beepBtn);
-  //container.createButton({20, 100}, rumbleTest, "Beep");
   
   Brain.Screen.setFillColor(red);
-  ScreenButton buzzButton = ScreenButton(1, {100, 100}, rumbleTest, "Buzz");
+  ScreenButton buzzButton = ButtonBuilder()
+    .id(1)
+    .position({100, 100})
+    .dimensions(60, 60)
+    .callback(rumbleTest)
+    .text("Buzz")
+    .fillColor(red)
+    .build();
   container.addButton(buzzButton);
-  //container.createButton({100, 100}, rumbleTest, "Buzz");
 
   //Auton Control
   Brain.Screen.setFillColor(purple);
-  ScreenButton compButton = ScreenButton(2, {100, 200}, switchAuton, "Competition");
+  ScreenButton compButton = ButtonBuilder()
+    .id(2)
+    .position({100, 200})
+    .callback(switchAuton)
+    .text("Competition")
+    .fillColor(purple)
+    .build();
   container.addButton(compButton);
-  //container.createButton({100, 200}, switchAuton, "Competition");
 
   Brain.Screen.setFillColor(cyan);
-  ScreenButton skillsButton = ScreenButton(3, {300, 200}, switchAuton, "Skills");
+  ScreenButton skillsButton = ButtonBuilder()
+    .id(3)
+    .position({300, 200})
+    .callback(switchAuton)
+    .text("Skills")
+    .fillColor(purple)
+    .build();
   container.addButton(skillsButton);
-  //container.createButton({300, 200}, switchAuton, "Skills");
 
   container.draw();
 }

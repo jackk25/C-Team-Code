@@ -20,7 +20,7 @@ void ScreenContainer::addButton(ScreenButton btn){
 }
 
 ScreenButton ScreenContainer::createButton(Point p1, void (*execute)(int id), std::string text, int width, int height){
-    ScreenButton btn(this->idCount, p1, execute, text, width, height);
+    ScreenButton btn;
     idCount++;
 
     return btn;
