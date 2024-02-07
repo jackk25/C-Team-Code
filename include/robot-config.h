@@ -10,6 +10,9 @@ extern motor leftFront;
 extern motor leftBack;
 extern motor rightBack;
 
+extern digital_out leftWing;
+extern digital_out rightWing;
+
 /**
  * Used to initialize code/tasks/devices added using tools in VEXcode Pro.
  * 

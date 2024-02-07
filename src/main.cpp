@@ -9,6 +9,7 @@
 
 #include "vex.h"
 #include "screen.h"
+#include "img.h"
 
 using namespace vex;
 
@@ -72,6 +73,16 @@ void driveCode() {
 
     motorSpin(intake, Controller1.ButtonL1.pressing(), Controller1.ButtonL2.pressing(), 100);
     motorSpin(launcher, false, Controller1.ButtonR1.pressing(), 100);
+    
+    if(Controller1.ButtonUp.pressing()){
+      leftWing.set(true);
+      rightWing.set(true);
+    }
+    if (Controller1.ButtonDown.pressing()) {
+      leftWing.set(false);
+      rightWing.set(false);
+    }
+    
   }
 }
 
@@ -86,10 +97,10 @@ void rumbleTest(int id){
 
 void switchAuton(int buttonId){
   Controller1.rumble(".");
-  if(buttonId == 2){
+  if(buttonId <= 3){
     skills = false;
   }
-  if(buttonId == 3){
+  if(buttonId == 4){
     skills = true;
   }
 }
@@ -100,25 +111,39 @@ void runThroughButtons(){
   container.runThroughButtons();
 }
 
-void createButtons(){
-  // Fun Buttons
-  Brain.Screen.setFillColor(blue);
-  container.createButton({20, 100}, rumbleTest, "Beep");
-  Brain.Screen.setFillColor(red);
+void rumbleTestBlah(int foo){
+  Controller1.rumble(".");
+}
 
-  container.createButton({100, 100}, rumbleTest, "Buzz");
-  Brain.Screen.setFillColor(green);
+void createButtons(){
+  //Colors
+  color blueColor = color(110, 200, 250);
+  color redColor = color(250, 105, 130);
+  color purpleColor = color(220, 110, 165);
 
   //Auton Control
-  Brain.Screen.setFillColor(purple);
-  container.createButton({100, 200}, switchAuton, "Competition");
-  Brain.Screen.setFillColor(cyan);
-  container.createButton({300, 200}, switchAuton, "Skills");
+  Brain.Screen.setFillColor(redColor);
+  container.createButton({42, 238}, switchAuton); //id: 0 
+  container.createButton({42, 60}, switchAuton); //id: 1
+
+  Brain.Screen.setFillColor(blueColor);
+  container.createButton({224, 238}, switchAuton); //id: 2
+  container.createButton({224, 60}, switchAuton); //id: 3
+
+  Brain.Screen.setFillColor(purpleColor);
+  container.createButton({352, 163}, switchAuton); //id: 4
+
+  container.createButton({60, 60}, rumbleTestBlah);
 }
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
+
+  //Brain.Screen.drawImageFromBuffer(screenBackground, 0, 0, 75468);
+
+  leftWing.set(false);
+  rightWing.set(false);
 
   createButtons();
 
