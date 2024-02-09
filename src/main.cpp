@@ -111,10 +111,6 @@ void runThroughButtons(){
   container.runThroughButtons();
 }
 
-void rumbleTestBlah(int foo){
-  Controller1.rumble(".");
-}
-
 void createButtons(){
   //Colors
   color blueColor = color(110, 200, 250);
@@ -132,15 +128,13 @@ void createButtons(){
 
   Brain.Screen.setFillColor(purpleColor);
   container.createButton({352, 163}, switchAuton); //id: 4
-
-  container.createButton({60, 60}, rumbleTestBlah);
 }
 
 int main() {
   // Initializing Robot Configuration. DO NOT REMOVE!
   vexcodeInit();
 
-  //Brain.Screen.drawImageFromBuffer(screenBackground, 0, 0, 75468);
+  Brain.Screen.drawImageFromBuffer(screenBackground, 0, 0, 75468);
 
   leftWing.set(false);
   rightWing.set(false);
