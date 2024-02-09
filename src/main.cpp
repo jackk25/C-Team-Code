@@ -72,7 +72,7 @@ void driveCode() {
     rightDrive.spin(forward, rightDriveStrength, pct);
 
     motorSpin(intake, Controller1.ButtonL1.pressing(), Controller1.ButtonL2.pressing(), 100);
-    motorSpin(launcher, false, Controller1.ButtonR1.pressing(), 100);
+    motorSpin(launcher, false, Controller1.ButtonR1.pressing(), 85);
     
     if(Controller1.ButtonUp.pressing()){
       leftWing.set(true);
@@ -83,15 +83,6 @@ void driveCode() {
       rightWing.set(false);
     }
     
-  }
-}
-
-void rumbleTest(int id){
-  if(id == 0 || id == 2) {
-      Controller1.rumble(".");
-  }
-  else if(id == 1 || id == 3){
-      Controller1.rumble("..");
   }
 }
 
