@@ -47,7 +47,7 @@ void autonControl(){
 }
 
 void possibleAuton(){
-  intake.spinFor(left, 3, seconds);
+  intake.spinFor(forward, 3, seconds);
   mainDrive.turnFor(left, 45, degrees);
   mainDrive.driveFor(forward, 6, inches);
   leftWing.set(true);
@@ -60,8 +60,6 @@ void possibleAuton(){
   mainDrive.turnFor(right, 90, degrees);
   mainDrive.driveFor(forward, 32, inches);
 }
-
-void possible 
 
 void motorSpin(motor_group dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
   int motorSpeed = (positiveButtonState * spinRate) - (negativeButtonState * spinRate);
