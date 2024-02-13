@@ -28,9 +28,14 @@ bool mirror = false;
 
 void autonControl(){
   if (skills == false && mirror == false){
-    Brain.Screen.print("Competition Regular!");
+    intake.spinFor(forward, 3, seconds);
+    mainDrive.driveFor(reverse, 18, inches);
+    intake.spinFor(reverse, 5, sec);
+  }
+  if (skills == false && mirror == true){
+    /*Brain.Screen.print("Competition Mirrored!");
     mainDrive.driveFor(forward, 46, inches);
-    mainDrive.turnFor(right, 45, degrees);
+    mainDrive.turnFor(right, 4e5, degrees);
     mainDrive.driveFor(forward, 6, inches);
     intake.spin(reverse);
     mainDrive.driveFor(reverse, 12, inches);
@@ -44,67 +49,14 @@ void autonControl(){
     mainDrive.turnFor(right, 50, deg);
     mainDrive.driveFor(forward, 46, inches);
     mainDrive.turnFor(right, 45, degrees);
-    mainDrive.driveFor(forward, 12*3.25, inches);
-  }
-  if (skills == false && mirror == true){
-    Brain.Screen.print("Competition Mirrored!");
-    mainDrive.driveFor(forward, 46, inches);
-    mainDrive.turnFor(left, 45, degrees);
-    mainDrive.driveFor(forward, 6, inches);
-    intake.spin(reverse);
-    mainDrive.driveFor(reverse, 12, inches);
-    //DESTROY THE GOAL!!!!
-    mainDrive.setDriveVelocity(75, pct);
-    mainDrive.driveFor(forward, 20, inches);
-    mainDrive.setDriveVelocity(50, pct);
-    mainDrive.driveFor(reverse, 12, inches);
-    intake.spin(forward);
-    //go back
-    mainDrive.turnFor(left, 50, deg);
-    mainDrive.driveFor(forward, 46, inches);
-    mainDrive.turnFor(left, 45, degrees);
-    mainDrive.driveFor(forward, 12*3.25, inches);
+    mainDrive.driveFor(forward, 12*3.25, inches);*/
+    mainDrive.setDriveVelocity(100, pct);
+    mainDrive.drive(reverse);
   }
   if (skills){
-    Brain.Screen.print("Skills!");
-    launcher.setVelocity(100, pct);
-    launcher.spinFor(forward, 45, seconds);
-    mainDrive.driveFor(forward, 14, inches);
-    mainDrive.turnFor(left, 70, degrees);
-    mainDrive.driveFor(forward, 12, inches);
-    mainDrive.turnFor(left, 90, degrees);
-    mainDrive.driveFor(forward, 16, inches);
-    intake.spinFor(reverse, 3, seconds);
-    mainDrive.driveFor(reverse, 12, inches);
-    mainDrive.turnFor(right, 100, degrees);
-    mainDrive.driveFor(reverse, 30, inches);
-    mainDrive.turnFor(right, 80, degrees);
-    mainDrive.driveFor(forward, 54, inches);
-    mainDrive.turnFor(left, 90, degrees);
-    mainDrive.driveFor(forward, 30, inches);
-    mainDrive.turnFor(right, 90, degrees);
-    mainDrive.driveFor(forward,15, inches);
-    mainDrive.driveFor(reverse, 12, inches);
-    mainDrive.turnFor(right, 45, degrees);
-    mainDrive.driveFor(forward, 4, inches);
-    mainDrive.turnFor(left, 45, degrees);
-    mainDrive.driveFor(forward, 24, inches);
+    launcher.setVelocity(100, percent);
+    launcher.spin(reverse);
   }
-}
-
-void possibleAuton(){
-  intake.spinFor(forward, 3, seconds);
-  mainDrive.turnFor(left, 45, degrees);
-  mainDrive.driveFor(forward, 6, inches);
-  leftWing.set(true);
-  mainDrive.turnFor(right, 10, degrees);
-  mainDrive.driveFor(forward, 6, inches);
-  mainDrive.turnFor(right, 35, degrees);
-  mainDrive.driveFor(forward, 12, inches);
-  intake.spinFor(reverse, 3, seconds);
-  mainDrive.driveFor(reverse, 15, inches);
-  mainDrive.turnFor(right, 90, degrees);
-  mainDrive.driveFor(forward, 32, inches);
 }
 
 void motorSpin(motor_group dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
