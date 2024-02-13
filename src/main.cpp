@@ -59,6 +59,24 @@ void autonControl(){
   }
 }
 
+void possibleAuton(){
+  intake.spinFor(forward, 2, seconds);
+  mainDrive.driveFor(reverse, 40, inches);
+  mainDrive.turnFor(left, 45, degrees);
+  mainDrive.driveFor(reverse, 6, inches);
+  leftWing.set(true);
+  mainDrive.driveFor(forward, 6, inches);
+  mainDrive.turnFor(left, 45, degrees);
+  mainDrive.driveFor(reverse, 30, inches);
+  mainDrive.driveFor(forward, 5, inches);
+  mainDrive.turnFor(right, 180, degrees);
+  mainDrive.driveFor(forward, 5, inches);
+  intake.spinFor(reverse, 2, seconds);
+  mainDrive.setDriveVelocity(100, percent);
+  mainDrive.driveFor(reverse, 10, inches);
+  mainDrive.driveFor(forward, 10, inches);
+}
+
 void motorSpin(motor_group dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
   int motorSpeed = (positiveButtonState * spinRate) - (negativeButtonState * spinRate);
   dstMotor.spin(forward, motorSpeed, percent);
