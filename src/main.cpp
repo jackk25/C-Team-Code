@@ -26,14 +26,14 @@ motor launcher = motor(PORT20, ratio6_1, true);
 bool skills = false;
 bool mirror = false;
 
-void autonControl(){
+/*void autonControl(){
   if (skills == false && mirror == false){
     intake.spinFor(forward, 3, seconds);
     mainDrive.driveFor(reverse, 18, inches);
     intake.spinFor(reverse, 5, sec);
   }
   if (skills == false && mirror == true){
-    /*Brain.Screen.print("Competition Mirrored!");
+    Brain.Screen.print("Competition Mirrored!");
     mainDrive.driveFor(forward, 46, inches);
     mainDrive.turnFor(right, 4e5, degrees);
     mainDrive.driveFor(forward, 6, inches);
@@ -49,7 +49,7 @@ void autonControl(){
     mainDrive.turnFor(right, 50, deg);
     mainDrive.driveFor(forward, 46, inches);
     mainDrive.turnFor(right, 45, degrees);
-    mainDrive.driveFor(forward, 12*3.25, inches);*/
+    mainDrive.driveFor(forward, 12*3.25, inches);
     mainDrive.setDriveVelocity(100, pct);
     mainDrive.drive(reverse);
   }
@@ -57,24 +57,32 @@ void autonControl(){
     launcher.setVelocity(100, percent);
     launcher.spin(reverse);
   }
-}
+}*/
 
-void possibleAuton(){
-  intake.spinFor(forward, 2, seconds);
-  mainDrive.driveFor(reverse, 40, inches);
-  mainDrive.turnFor(left, 45, degrees);
-  mainDrive.driveFor(reverse, 6, inches);
-  leftWing.set(true);
-  mainDrive.driveFor(forward, 6, inches);
-  mainDrive.turnFor(left, 45, degrees);
-  mainDrive.driveFor(reverse, 30, inches);
-  mainDrive.driveFor(forward, 5, inches);
-  mainDrive.turnFor(right, 180, degrees);
-  mainDrive.driveFor(forward, 5, inches);
+void autonControl(){
+  /*intake.spinFor(forward, 2, seconds);
+  mainDrive.driveFor(reverse, 32, inches);
+  mainDrive.turnFor(left, 25, degrees);
+  Brain.Screen.print("Hello ");
+  mainDrive.driveFor(reverse, 10, inches);
+  //leftWing.set(true);
+  Brain.Screen.print("from ");
+  mainDrive.driveFor(reverse, 12, inches);
+  Brain.Screen.print("the ");
+  mainDrive.turnFor(left, 20, degrees);
+  Brain.Screen.print("Seattle ");
+  mainDrive.driveFor(reverse, 13, inches);
+  Brain.Screen.print("Prep ");
+  mainDrive.driveFor(forward, 2, inches);
+  Brain.Screen.print("Robotics ");
+  mainDrive.turnFor(right, , degrees);
+  Brain.Screen.print("team ");
+  mainDrive.driveFor(forward, 2, inches);
   intake.spinFor(reverse, 2, seconds);
   mainDrive.setDriveVelocity(100, percent);
-  mainDrive.driveFor(reverse, 10, inches);
-  mainDrive.driveFor(forward, 10, inches);
+  mainDrive.driveFor(reverse, 6, inches);
+  mainDrive.driveFor(forward, 10, inches);*/
+  mainDrive.turnFor(right, 360, degrees);
 }
 
 void motorSpin(motor_group dstMotor, bool positiveButtonState, bool negativeButtonState, int spinRate){
